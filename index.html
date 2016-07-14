@@ -1,0 +1,40 @@
+<!doctype html>
+<html ng-app="app">
+<head>
+	<meta charset="UTF-8">
+	<title>iBrew - Calculadora amargor</title>
+</head>
+
+<body ng-controller="appController as ctrl">
+
+	<h2>Calculadora de amargor</h2>
+
+	<!-- Formulario de captura de datos -->
+	<form calculoIbus class="simple-form">
+		Tiempo hervor: <input type="text" name="tiempo_hervor" ng-model="ibus.tiempo_hervor" /><br/>
+		Tipo de lúpulo (0/1): <input type="text" name="tipo_lupulo" ng-model="ibus.tipo_lupulo" /><br/>
+		Cantidad de lúpulo: <input type="text" name="gramos_lupulo" ng-model="ibus.gramos_lupulo" /><br/>
+		Porcentaje alfa-ácidos: <input type="text" name="alfa_acidos" ng-model="ibus.alfa_acidos" /><br/>
+		Litros mosto tras hervor: <input type="text" name="litros_mosto_post_hervor" ng-model="ibus.litros_mosto_post_hervor" /><br/>
+		Densidad mosto tras hervor: <input type="text" name="densidad_mosto_post_hervor" ng-model="ibus.densidad_mosto_post_hervor" /><br/>
+
+		<input type="button" value="Reset" ng-click="reset()" />
+		<input type="submit" value="Calcular" ng-click="calcularIbus(ibus)"/>
+ 	</form>
+
+	<p> Ibus calculados: {{ibus.ibus_calculados}} </p>
+	<!--ul>
+		<li ng-repeat="cena in ctrl.cenas">
+			<span>{{cena.descripcion}}<br/>{{cena.sitio}}<br/>{{cena.precio_estimado}}€</span>
+		</li>
+	</ul-->
+
+	<script type="text/javascript" src="refs/angular.min.js"></script>
+	<script type="text/javascript" src="refs/angular-route.min.js"></script>
+
+	<script type="text/javascript" src="app.js"></script>
+	<script type="text/javascript" src="controller.js"></script>
+	<script type="text/javascript" src="factoria.js"></script>
+
+</body>
+</html>
