@@ -19,6 +19,7 @@ angular.module('app.services', [])
 			return $http({
 				method:'GET',
 				url:'http://localhost:5000/ibus',
+				//url:'https://stark-sea-67061.herokuapp.com/ibus',
 				params: {tiempo_hervor: tiempo_hervor_ent,
 								 tipo_lupulo: tipo_lupulo_ent,
 								 gramos_lupulo: gramos_lupulo_ent,

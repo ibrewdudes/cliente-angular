@@ -1,37 +1,93 @@
-<!doctype html>
+<!DOCTYPE html>
 <html ng-app="app">
 <head>
-	<meta charset="UTF-8">
+  <meta charset="UTF-8">
+	<!-- Angular Material style sheet -->
+  <link rel="stylesheet" href="bower_components/angular-material/angular-material.css"><meta charset="UTF-8">
+	<link rel="stylesheet" href="bower_components/docs.css"><meta charset="UTF-8">
+
 	<title>iBrew - Calculadora amargor</title>
 </head>
 
 <body ng-controller="appController as ctrl">
 
-	<h2>Calculadora de amargor</h2>
+	<h1>Calculadora de amargor</h1>
 
 	<!-- Formulario de captura de datos -->
 	<form calculoIbus class="simple-form">
+		<div layout-gt-sm="row">
+			<md-input-container class="md-block" flex-gt-sm="">
+				<label>Tiempo hervor (minutos)</label>
+				<input required="true" ng-model="ibus.tiempo_hervor">
+			</md-input-container>
+		</div>
+
+		<div layout-gt-sm="row">
+			<md-input-container class="md-block" flex-gt-sm="">
+				<label>Tipo de lúpulo (0-Flor/1-Pellet): </label>
+				<input required="true" ng-model="ibus.tipo_lupulo">
+			</md-input-container>
+		</div>
+
+		<div layout-gt-sm="row">
+			<md-input-container class="md-block" flex-gt-sm="">
+				<label>Cantidad de lúpulo (gramos): </label>
+				<input required="true" ng-model="ibus.gramos_lupulo">
+			</md-input-container>
+		</div>
+
+		<div layout-gt-sm="row">
+			<md-input-container class="md-block" flex-gt-sm="">
+				<label>Porcentaje de alfa-ácidos </label>
+				<input required="true" ng-model="ibus.alfa_acidos">
+			</md-input-container>
+		</div>
+
+		<div layout-gt-sm="row">
+			<md-input-container class="md-block" flex-gt-sm="">
+				<label>Mostro tras hervor (litros) </label>
+				<input required="true" ng-model="ibus.litros_mosto_post_hervor">
+			</md-input-container>
+		</div>
+
+		<div layout-gt-sm="row">
+			<md-input-container class="md-block" flex-gt-sm="">
+				<label>Densidad mosto tras hervor </label>
+				<input required="true" ng-model="ibus.densidad_mosto_post_hervor">
+			</md-input-container>
+		</div>
+
+<!--
 		Tiempo hervor: <input type="text" name="tiempo_hervor" ng-model="ibus.tiempo_hervor" /><br/>
 		Tipo de lúpulo (0/1): <input type="text" name="tipo_lupulo" ng-model="ibus.tipo_lupulo" /><br/>
 		Cantidad de lúpulo: <input type="text" name="gramos_lupulo" ng-model="ibus.gramos_lupulo" /><br/>
 		Porcentaje alfa-ácidos: <input type="text" name="alfa_acidos" ng-model="ibus.alfa_acidos" /><br/>
 		Litros mosto tras hervor: <input type="text" name="litros_mosto_post_hervor" ng-model="ibus.litros_mosto_post_hervor" /><br/>
 		Densidad mosto tras hervor: <input type="text" name="densidad_mosto_post_hervor" ng-model="ibus.densidad_mosto_post_hervor" /><br/>
-
+-->
 		<input type="button" value="Reset" ng-click="reset()" />
 		<input type="submit" value="Calcular" ng-click="calcularIbus(ibus)"/>
+
  	</form>
 
+
+
+
 	<p> Ibus calculados: {{ibus.ibus_calculados}} </p>
-	<!--ul>
-		<li ng-repeat="cena in ctrl.cenas">
-			<span>{{cena.descripcion}}<br/>{{cena.sitio}}<br/>{{cena.precio_estimado}}€</span>
-		</li>
-	</ul-->
 
-	<script type="text/javascript" src="refs/angular.min.js"></script>
-	<script type="text/javascript" src="refs/angular-route.min.js"></script>
 
+	<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+
+  <! Angular material >
+	<script src="bower_components/angular-animate/angular-animate.min.js"></script>
+	<script src="bower_components/angular-aria/angular-aria.min.js"></script>
+	<script src="bower_components/angular-route/angular-route.min.js"></script-->
+	<script src="bower_components/angular-messages/angular-messages.min.js"></script>
+	<script src="bower_components/svg-assets-cache.js/svg-assets-cache.js"></script>
+	<script src="bower_components/angular-material/angular-material.js"></script>
+
+
+  <!-- Scripts de la aplicación -->
 	<script type="text/javascript" src="app.js"></script>
 	<script type="text/javascript" src="controller.js"></script>
 	<script type="text/javascript" src="factoria.js"></script>
