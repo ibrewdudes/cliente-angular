@@ -18,7 +18,8 @@
 		<div layout-gt-sm="row">
 			<md-input-container class="md-block" flex-gt-sm="">
 				<label>Tiempo hervor (minutos)</label>
-				<input required="true" md-maxlength="4" type="number" ng-model="ibus.tiempo_hervor">
+        <!--input required="true" md-maxlength="4" type="number" ng-model="ibus.tiempo_hervor"-->
+        <input required="true" md-maxlength="4" ng-model="ibus.tiempo_hervor">
 			</md-input-container>
 		</div>
 
@@ -42,30 +43,31 @@
     <div layout-gt-sm="row">
 			<md-input-container class="md-block" flex-gt-sm="">
 				<label>Cantidad de lúpulo (gramos): </label>
-				<input required="true" md-maxlength="3" type="number" ng-model="ibus.gramos_lupulo">
+				<input required="true" md-maxlength="3" ng-model="ibus.gramos_lupulo">
 			</md-input-container>
 		</div>
 
 		<div layout-gt-sm="row">
 			<md-input-container class="md-block" flex-gt-sm="">
 				<label>Porcentaje de alfa-ácidos </label>
-				<input required="true" md-maxlength="6" type="text" ng-model="ibus.alfa_acidos">
+				<input required="true" md-maxlength="6" ng-model="ibus.alfa_acidos">
 			</md-input-container>
 		</div>
 
 		<div layout-gt-sm="row">
 			<md-input-container class="md-block" flex-gt-sm="">
 				<label>Mostro tras hervor (litros) </label>
-				<input required="true" md-maxlength="4" type="number" ng-model="ibus.litros_mosto_post_hervor">
+				<input required="true" md-maxlength="4" ng-model="ibus.litros_mosto_post_hervor">
 			</md-input-container>
 		</div>
 
 		<div layout-gt-sm="row">
 			<md-input-container class="md-block" flex-gt-sm="">
 				<label>Densidad mosto tras hervor </label>
-				<input required="true" md-maxlength="4" type="number" ng-model="ibus.densidad_mosto_post_hervor">
+				<input required="true" md-maxlength="4" ng-model="ibus.densidad_mosto_post_hervor">
 			</md-input-container>
 		</div>
+
 
 <!--
 		Tiempo hervor: <input type="text" name="tiempo_hervor" ng-model="ibus.tiempo_hervor" /><br/>

@@ -49,12 +49,12 @@ function funcionController($scope, $http, IbusFactory){
 	//--------------------------------------------------------------------------------
 	$scope.calcularIbus = function(misDatos){
 		// Llamamos al servicio que calcula los ibus
-//alert("Tiempo: " + misDatos.tiempo_hervor);
+alert("Tiempo: " + misDatos.tiempo_hervor);
 //alert("Tipo lúpulo: " + misDatos.tipo_lupulo.id);
-//alert("Gramos: " + misDatos.gramos_lupulo);
+alert("Gramos: " + misDatos.gramos_lupulo);
 //alert("Alfa ácidos: " + misDatos.alfa_acidos);
 //alert("Mosto post-hervor: " + misDatos.litros_mosto_post_hervor);
-//alert("Densidad mosto: "+ misDatos.densidad_mosto_post_hervor);  
+//alert("Densidad mosto: "+ misDatos.densidad_mosto_post_hervor);
 
 
 		IbusFactory.ibusSimpleHttp(misDatos.tiempo_hervor,
