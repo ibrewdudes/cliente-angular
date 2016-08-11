@@ -18,42 +18,52 @@
 		<div layout-gt-sm="row">
 			<md-input-container class="md-block" flex-gt-sm="">
 				<label>Tiempo hervor (minutos)</label>
-				<input required="true" ng-model="ibus.tiempo_hervor">
+				<input required="true" md-maxlength="4" type="number" ng-model="ibus.tiempo_hervor">
 			</md-input-container>
 		</div>
 
-		<div layout-gt-sm="row">
+    <!--div layout-gt-sm="row">
 			<md-input-container class="md-block" flex-gt-sm="">
 				<label>Tipo de lúpulo (0-Flor/1-Pellet): </label>
-				<input required="true" ng-model="ibus.tipo_lupulo">
+				<input required="true" md-maxlength="1" type="number" ng-model="ibus.tipo_lupulo">
+			</md-input-container>
+		</div-->
+
+    <div layout-gt-sm="row">
+			<md-input-container class="md-block" flex-gt-sm="">
+				<label>Tipo de lúpulo: </label>
+        <md-select ng-model="ibus.tipo_lupulo" ng-model-options="{trackBy: '$value.id'}">
+          <md-option ng-value="tipo" ng-repeat="tipo in tipos_lupulo">{{tipo.descripcion}}</md-option>
+        </md-select>
 			</md-input-container>
 		</div>
 
-		<div layout-gt-sm="row">
+
+    <div layout-gt-sm="row">
 			<md-input-container class="md-block" flex-gt-sm="">
 				<label>Cantidad de lúpulo (gramos): </label>
-				<input required="true" ng-model="ibus.gramos_lupulo">
+				<input required="true" md-maxlength="3" type="number" ng-model="ibus.gramos_lupulo">
 			</md-input-container>
 		</div>
 
 		<div layout-gt-sm="row">
 			<md-input-container class="md-block" flex-gt-sm="">
 				<label>Porcentaje de alfa-ácidos </label>
-				<input required="true" ng-model="ibus.alfa_acidos">
+				<input required="true" md-maxlength="6" type="text" ng-model="ibus.alfa_acidos">
 			</md-input-container>
 		</div>
 
 		<div layout-gt-sm="row">
 			<md-input-container class="md-block" flex-gt-sm="">
 				<label>Mostro tras hervor (litros) </label>
-				<input required="true" ng-model="ibus.litros_mosto_post_hervor">
+				<input required="true" md-maxlength="4" type="number" ng-model="ibus.litros_mosto_post_hervor">
 			</md-input-container>
 		</div>
 
 		<div layout-gt-sm="row">
 			<md-input-container class="md-block" flex-gt-sm="">
 				<label>Densidad mosto tras hervor </label>
-				<input required="true" ng-model="ibus.densidad_mosto_post_hervor">
+				<input required="true" md-maxlength="4" type="number" ng-model="ibus.densidad_mosto_post_hervor">
 			</md-input-container>
 		</div>
 
