@@ -19,8 +19,8 @@
              - fields: campos a pintar en el formulario
              - form: nombre para referenciar el formulario
       -->
-      <formly-form model="vm.calculadoraModel" fields="vm.calculadoraFields" form="vm.calculadoraForm">
-        <button type="reset" class="btn btn-primary">Reset</button>
+      <formly-form model="vm.calculadoraModel" fields="vm.calculadoraFields" form="vm.calculadoraForm" options="vm.options">
+        <button type="button" class="btn btn-primary" ng-click="vm.options.resetModel()">Reset</button>
         <button type="submit" class="btn btn-primary" ng-disabled="vm.calculadoraForm.$invalid" ng-click="vm.submit()">Calcular</button>
         <p></p><p> Ibus calculados: {{vm.ibus_calculados}} </p>
       </formly-form>

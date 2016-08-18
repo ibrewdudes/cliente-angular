@@ -105,7 +105,8 @@ function funcionController($http, IbusFactory){
   // Función para limpiar los datos del formulario
 	//--------------------------------------------------------------------------------
 	vm.reset = function(){
-		vm.calculadoraModel = {
+		vm.calculadoraModel = {};
+		/*
 			tiempo_hervor: 60,
 			factor_forma_lupulo: 0,
 			cantidad_lupulo: 15,
@@ -113,7 +114,7 @@ function funcionController($http, IbusFactory){
 			cantidad_mosto: 20,
 			densidad_post_hervor: 1060
 			//ibus_calculados: 0,
-		};
+		};*/
 
 		//vm.tipo_lupulo_seleccionado = {id: 0, descripcion: 'Flor'};
 	}
