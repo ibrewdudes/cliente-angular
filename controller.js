@@ -34,7 +34,7 @@ function funcionController($http, IbusFactory){
 		},
 
 		// Segundo campo: tipo del lúpulo (0-Flor, 1-Pellet)
-		{
+/*		{
 			key: 'factor_forma_lupulo',
 			type: 'input',
 			templateOptions: {
@@ -43,7 +43,21 @@ function funcionController($http, IbusFactory){
 				placeholder: '0-flor, 1-pellet',
 				required: true
 			}
-		},
+		},*/
+
+		// Segundo campo: tipo del lúpulo (0-Flor, 1-Pellet)
+    {
+      key: 'factor_forma_lupulo',
+      type: 'select',
+			defaultValue: 0,
+			templateOptions: {
+        label: 'Tipo de lúpulo',
+        options: [
+					{name: 'Flor', value: 0},
+					{name: 'Pellet', value: 1},
+				]
+      }
+    },
 
 		// Cantidad de lúpulo en gramos
 		{
