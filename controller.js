@@ -34,18 +34,6 @@ function funcionController($http, IbusFactory){
 		},
 
 		// Segundo campo: tipo del lúpulo (0-Flor, 1-Pellet)
-/*		{
-			key: 'factor_forma_lupulo',
-			type: 'input',
-			templateOptions: {
-				type: 'text',
-				label: 'Tipo de lúpulo',
-				placeholder: '0-flor, 1-pellet',
-				required: true
-			}
-		},*/
-
-		// Segundo campo: tipo del lúpulo (0-Flor, 1-Pellet)
     {
       key: 'factor_forma_lupulo',
       type: 'select',
@@ -55,7 +43,8 @@ function funcionController($http, IbusFactory){
         options: [
 					{name: 'Flor', value: 0},
 					{name: 'Pellet', value: 1},
-				]
+				],
+				required: true
       }
     },
 
@@ -119,8 +108,11 @@ function funcionController($http, IbusFactory){
   // Función para limpiar los datos del formulario
 	//--------------------------------------------------------------------------------
 	vm.reset = function(){
-		vm.calculadoraModel = {};
-		/*
+		vm.options.resetModel();
+		vm.ibus_calculados = 0;
+		
+		/*vm.calculadoraModel = {};
+
 			tiempo_hervor: 60,
 			factor_forma_lupulo: 0,
 			cantidad_lupulo: 15,
