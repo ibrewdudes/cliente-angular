@@ -1,27 +1,101 @@
+(function(){
+'use strict';
+
 //--------------------------------------------------------------------------------
 // Declaramos el módulo y su controladon (con la fución que le da servicio)
 //
 //--------------------------------------------------------------------------------
-angular.module('app.controllers', []).controller('appController', funcionController);
+angular
+	.module('app.controllers', [])
+	.controller('appController', funcionController);
 
 //--------------------------------------------------------------------------------
 // appController functions
 //
 //--------------------------------------------------------------------------------
-function funcionController($scope, $http, IbusFactory){
+function funcionController($http, IbusFactory){
+	var vm = this;
 
-	$scope.ibus = {
-		tiempo_hervor: '',
-		tipo_lupulo: {id: 0, descripcion: 'Flor'},
-		gramos_lupulo: '',
-		alfa_acidos: '',
-		litros_mosto_post_hervor: '',
-		densidad_mosto_post_hervor: '',
-		ibus_calculados: 0
-	};
+  vm.ibus_calculados = 0;
+
+	vm.calculadoraModel = {};
+
+	vm.calculadoraFields = [
+		// Primer campo: tiempo de hervor en minutos
+		{
+			key: 'tiempo_hervor',
+			type: 'input',
+			templateOptions: {
+				type: 'text',
+				label: 'Tiempo hervor',
+				placeholder: 'minutos',
+				required: true
+			}
+		},
+
+		// Segundo campo: tipo del lúpulo (0-Flor, 1-Pellet)
+		{
+			key: 'factor_forma_lupulo',
+			type: 'input',
+			templateOptions: {
+				type: 'text',
+				label: 'Tipo de lúpulo',
+				placeholder: '0-flor, 1-pellet',
+				required: true
+			}
+		},
+
+		// Cantidad de lúpulo en gramos
+		{
+			key: 'cantidad_lupulo',
+			type: 'input',
+			templateOptions: {
+				type: 'text',
+				label: 'Cantidad de lúpulo',
+				placeholder: 'gramos',
+				required: true
+			}
+		},
+
+		// Porcentaje alfa-ácidos
+		{
+			key: 'alfa_acidos',
+			type: 'input',
+			templateOptions: {
+				type: 'text',
+				label: 'Porcentaje alfa-ácidos',
+				placeholder: 'en %',
+				required: true
+			}
+		},
+
+		// Mosto tras hervor en litros
+		{
+			key: 'cantidad_mosto',
+			type: 'input',
+			templateOptions: {
+				type: 'text',
+				label: 'Mosto tras hervor',
+				placeholder: 'litros',
+				required: true
+			}
+		},
+
+		// Densidad del mosto tras hervor
+		{
+			key: 'densidad_post_hervor',
+			type: 'input',
+			templateOptions: {
+				type: 'text',
+				label: 'Densidad del mosto tras hervor',
+				placeholder: 'unidades?',
+				required: true
+			}
+		}
+	];
 
 	// Para mostrar el combo con los tipos de lúpulo (flor/pellet)
-  $scope.tipos_lupulo = [
+  vm.tipos_lupulo = [
 		{id: 0, descripcion: 'Flor'},
 		{id: 1, descripcion: 'Pellet'}
 	];
@@ -30,45 +104,43 @@ function funcionController($scope, $http, IbusFactory){
 	//--------------------------------------------------------------------------------
   // Función para limpiar los datos del formulario
 	//--------------------------------------------------------------------------------
-	$scope.reset = function(){
-		$scope.ibus = {
+	vm.reset = function(){
+		vm.calculadoraModel = {
 			tiempo_hervor: 60,
-			tipo_lupulo: {id: 0, descripcion: 'Flor'},
-			gramos_lupulo: 15,
+			factor_forma_lupulo: 0,
+			cantidad_lupulo: 15,
 			alfa_acidos: 7.2,
-			litros_mosto_post_hervor: 20,
-			densidad_mosto_post_hervor: 1060,
-			ibus_calculados: 0,
+			cantidad_mosto: 20,
+			densidad_post_hervor: 1060
+			//ibus_calculados: 0,
 		};
 
-		$scope.tipo_lupulo_seleccionado = {id: 0, descripcion: 'Flor'};
+		//vm.tipo_lupulo_seleccionado = {id: 0, descripcion: 'Flor'};
 	}
+
 
 	//--------------------------------------------------------------------------------
   // Función que invoca al servicio para el cálculo de ibus
 	//--------------------------------------------------------------------------------
-	$scope.calcularIbus = function(misDatos){
+	vm.submit = function(){
+		//alert(JSON.stringify(vm.calculadoraModel));
+
 		// Llamamos al servicio que calcula los ibus
-alert("Tiempo: " + misDatos.tiempo_hervor);
-//alert("Tipo lúpulo: " + misDatos.tipo_lupulo.id);
-alert("Gramos: " + misDatos.gramos_lupulo);
-//alert("Alfa ácidos: " + misDatos.alfa_acidos);
-//alert("Mosto post-hervor: " + misDatos.litros_mosto_post_hervor);
-//alert("Densidad mosto: "+ misDatos.densidad_mosto_post_hervor);
-
-
-		IbusFactory.ibusSimpleHttp(misDatos.tiempo_hervor,
-															 misDatos.tipo_lupulo.id,
-															 misDatos.gramos_lupulo,
-															 misDatos.alfa_acidos,
-															 misDatos.litros_mosto_post_hervor,
-															 misDatos.densidad_mosto_post_hervor)
+		IbusFactory.ibusSimpleHttp(vm.calculadoraModel.tiempo_hervor,
+															 vm.calculadoraModel.factor_forma_lupulo,
+															 vm.calculadoraModel.cantidad_lupulo,
+															 vm.calculadoraModel.alfa_acidos,
+															 vm.calculadoraModel.cantidad_mosto,
+															 vm.calculadoraModel.densidad_post_hervor)
 			.success(function(data,status,config,headers){
-				$scope.ibus.ibus_calculados = data.ibus;
-				console.log('Response from server: ' + data); //called when responses arrives from server
+				vm.ibus_calculados = data.ibus;
+				console.log('Response from server: ' + data.ibus); //called when responses arrives from server
 		}).error(function(data, status, config, headers){
 			console.log('Some eror ocurred!!');
 		});
 	};
 
+
 }
+
+})();

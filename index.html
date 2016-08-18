@@ -3,106 +3,41 @@
 <head>
   <meta charset="UTF-8">
 	<!-- Angular Material style sheet -->
-  <link rel="stylesheet" href="bower_components/angular-material/angular-material.css"><meta charset="UTF-8">
-	<link rel="stylesheet" href="bower_components/docs.css"><meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.css">
 
 	<title>iBrew - Calculadora amargor</title>
 </head>
 
-<body ng-controller="appController as ctrl">
+<body ng-controller="appController as vm">
 
-	<h1>Calculadora de amargor</h1>
-
-	<!-- Formulario de captura de datos -->
-	<form calculoIbus class="simple-form">
-		<div layout-gt-sm="row">
-			<md-input-container class="md-block" flex-gt-sm="">
-				<label>Tiempo hervor (minutos)</label>
-        <!--input required="true" md-maxlength="4" type="number" ng-model="ibus.tiempo_hervor"-->
-        <input required="true" md-maxlength="4" ng-model="ibus.tiempo_hervor">
-			</md-input-container>
-		</div>
-
-    <!--div layout-gt-sm="row">
-			<md-input-container class="md-block" flex-gt-sm="">
-				<label>Tipo de lúpulo (0-Flor/1-Pellet): </label>
-				<input required="true" md-maxlength="1" type="number" ng-model="ibus.tipo_lupulo">
-			</md-input-container>
-		</div-->
-
-    <div layout-gt-sm="row">
-			<md-input-container class="md-block" flex-gt-sm="">
-				<label>Tipo de lúpulo: </label>
-        <md-select ng-model="ibus.tipo_lupulo" ng-model-options="{trackBy: '$value.id'}">
-          <md-option ng-value="tipo" ng-repeat="tipo in tipos_lupulo">{{tipo.descripcion}}</md-option>
-        </md-select>
-			</md-input-container>
-		</div>
-
-
-    <div layout-gt-sm="row">
-			<md-input-container class="md-block" flex-gt-sm="">
-				<label>Cantidad de lúpulo (gramos): </label>
-				<input required="true" md-maxlength="3" ng-model="ibus.gramos_lupulo">
-			</md-input-container>
-		</div>
-
-		<div layout-gt-sm="row">
-			<md-input-container class="md-block" flex-gt-sm="">
-				<label>Porcentaje de alfa-ácidos </label>
-				<input required="true" md-maxlength="6" ng-model="ibus.alfa_acidos">
-			</md-input-container>
-		</div>
-
-		<div layout-gt-sm="row">
-			<md-input-container class="md-block" flex-gt-sm="">
-				<label>Mostro tras hervor (litros) </label>
-				<input required="true" md-maxlength="4" ng-model="ibus.litros_mosto_post_hervor">
-			</md-input-container>
-		</div>
-
-		<div layout-gt-sm="row">
-			<md-input-container class="md-block" flex-gt-sm="">
-				<label>Densidad mosto tras hervor </label>
-				<input required="true" md-maxlength="4" ng-model="ibus.densidad_mosto_post_hervor">
-			</md-input-container>
-		</div>
-
-
-<!--
-		Tiempo hervor: <input type="text" name="tiempo_hervor" ng-model="ibus.tiempo_hervor" /><br/>
-		Tipo de lúpulo (0/1): <input type="text" name="tipo_lupulo" ng-model="ibus.tipo_lupulo" /><br/>
-		Cantidad de lúpulo: <input type="text" name="gramos_lupulo" ng-model="ibus.gramos_lupulo" /><br/>
-		Porcentaje alfa-ácidos: <input type="text" name="alfa_acidos" ng-model="ibus.alfa_acidos" /><br/>
-		Litros mosto tras hervor: <input type="text" name="litros_mosto_post_hervor" ng-model="ibus.litros_mosto_post_hervor" /><br/>
-		Densidad mosto tras hervor: <input type="text" name="densidad_mosto_post_hervor" ng-model="ibus.densidad_mosto_post_hervor" /><br/>
--->
-		<input type="button" value="Reset" ng-click="reset()" />
-		<input type="submit" value="Calcular" ng-click="calcularIbus(ibus)"/>
-
- 	</form>
-
-
-
-
-	<p> Ibus calculados: {{ibus.ibus_calculados}} </p>
-
-
-	<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
-
-  <! Angular material >
-	<script src="bower_components/angular-animate/angular-animate.min.js"></script>
-	<script src="bower_components/angular-aria/angular-aria.min.js"></script>
-	<script src="bower_components/angular-route/angular-route.min.js"></script-->
-	<script src="bower_components/angular-messages/angular-messages.min.js"></script>
-	<script src="bower_components/svg-assets-cache.js/svg-assets-cache.js"></script>
-	<script src="bower_components/angular-material/angular-material.js"></script>
-
-
-  <!-- Scripts de la aplicación -->
-	<script type="text/javascript" src="app.js"></script>
-	<script type="text/javascript" src="controller.js"></script>
-	<script type="text/javascript" src="factoria.js"></script>
-
+  <div class="container col-md-4 col-md-offset-4">
+    <form novalidate>
+      <h1> Calculadora de amargor </h1>
+      <!-- Campos del formulario formly, definidos en el controller:
+             - model: modelo donde podemos inicializar los datos
+             - fields: campos a pintar en el formulario
+             - form: nombre para referenciar el formulario
+      -->
+      <formly-form model="vm.calculadoraModel" fields="vm.calculadoraFields" form="vm.calculadoraForm">
+        <button type="button" class="btn btn-primary" ng-click="vm.reset()">Reset</button>
+        <button type="submit" class="btn btn-primary" ng-disabled="vm.calculadoraForm.$invalid" ng-click="vm.submit()">Calcular</button>
+        <p></p><p> Ibus calculados: {{vm.ibus_calculados}} </p>
+      </formly-form>
+    </form>
+  </div>
 </body>
+
+
+<!-- Application dependencies -->
+<script src="bower_components/api-check/dist/api-check.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-formly/dist/formly.js"></script>
+<script src="bower_components/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.js"></script>
+
+<!-- Scripts de la aplicación -->
+<script type="text/javascript" src="app.js"></script>
+<script type="text/javascript" src="controller.js"></script>
+<script type="text/javascript" src="factoria.js"></script>
+
 </html>
