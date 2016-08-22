@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="app">
 <head>
+  <meta name="viweport" content="width-device-width, initial-scale=1">
   <meta charset="UTF-8">
 	<!-- Angular Material style sheet -->
   <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -12,28 +13,119 @@
 <body ng-controller="appController as vm">
 
   <div class="container col-md-4 col-md-offset-4">
-    <form novalidate>
+
+    <!------------------------------------------------------------------------------------------------>
+    <!-- Formulario de la calculadora                                                               -->
+    <!--                                                                                            -->
+    <!--                                                                                            -->
+    <!------------------------------------------------------------------------------------------------>
+    <form name="formularioCalculadora" ng-submit="vm.submit()" novalidate>
+
       <h1> Calculadora de amargor </h1>
-      <!-- Campos del formulario formly, definidos en el controller:
-             - model: modelo donde podemos inicializar los datos
-             - fields: campos a pintar en el formulario
-             - form: nombre para referenciar el formulario
-      -->
-      <formly-form model="vm.calculadoraModel" fields="vm.calculadoraFields" form="vm.calculadoraForm" options="vm.options">
-        <button type="button" class="btn btn-primary" ng-click="vm.reset()">Reset</button>
-        <button type="submit" class="btn btn-primary" ng-disabled="vm.calculadoraForm.$invalid" ng-click="vm.submit()">Calcular</button>
-        <p></p><p> Ibus calculados: {{vm.ibus_calculados}} </p>
-      </formly-form>
+      <div class="form-group ng-scope" >
+        <label class="control-label"> Tiempo de hervor * </label>
+        <input type="text"
+               class="form-control ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required"
+               name="tiempo_hervor"
+               placeholder="minutos"
+               ng-model="vm.calculadoraModel.tiempo_hervor"
+               ng-required="true"
+               ng-pattern="/^[0-9]+$/"/>
+
+        <span class="error-message"
+              ng-show="formularioCalculadora.tiempo_hervor.$dirty && formularioCalculadora.tiempo_hervor.$invalid">
+            Un número sin decimales
+        </span>
+      </div>
+
+      <div class="form-group ng-scope" >
+        <label class="control-label"> Tipo de lúpulo * </label>
+        <select name="factor_forma_lupulo"
+                class="form-control ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required"
+                ng-model="vm.calculadoraModel.factor_forma_lupulo"
+                ng-options="tipo.id as tipo.descripcion for tipo in vm.tipos_lupulo">
+          <option value="">Elija un formato</option>
+        </select>
+      </div>
+
+      <div class="form-group ng-scope" >
+        <label class="control-label"> Cantidad de lúpulo * </label>
+        <input type="text"
+               class="form-control ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required"
+               name="cantidad_lupulo"
+               placeholder="gramos"
+               ng-model="vm.calculadoraModel.cantidad_lupulo"
+               ng-required="true"
+               ng-pattern="/^[0-9]+$/"/>
+
+         <span class="error-message"
+               ng-show="formularioCalculadora.cantidad_lupulo.$dirty && formularioCalculadora.cantidad_lupulo.$invalid">
+             Un número sin decimales
+         </span>
+      </div>
+
+      <div class="form-group ng-scope" >
+        <label class="control-label"> Porcentaje alfa-ácidos * </label>
+        <input type="text"
+               class="form-control ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required"
+               name="alfa_acidos"
+               placeholder="en %"
+               ng-model="vm.calculadoraModel.alfa_acidos"
+               ng-required="true"
+               ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"/>
+
+         <span class="error-message"
+               ng-show="formularioCalculadora.alfa_acidos.$dirty && formularioCalculadora.alfa_acidos.$invalid">
+             Un número que puede tener decimales (ej.: 3.41)
+         </span>
+      </div>
+
+      <div class="form-group ng-scope" >
+        <label class="control-label"> Mosto tras hervor * </label>
+        <input type="text"
+               class="form-control ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required"
+               name="cantidad_mosto"
+               placeholder="litros"
+               ng-model="vm.calculadoraModel.cantidad_mosto"
+               ng-required="true"
+               ng-pattern="/^[0-9]+$/"/>
+
+         <span class="error-message"
+               ng-show="formularioCalculadora.cantidad_mosto.$dirty && formularioCalculadora.cantidad_mosto.$invalid">
+             Un número sin decimales
+         </span>
+      </div>
+
+      <div class="form-group ng-scope" >
+        <label class="control-label"> Densidad del mosto tras hervor * </label>
+        <input type="text"
+               class="form-control ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required"
+               name="densidad_post_hervor"
+               placeholder="kg/m3"
+               ng-model="vm.calculadoraModel.densidad_post_hervor"
+               ng-required="true"
+               ng-pattern="/^[0-9]+$/"/>
+
+         <span class="error-message"
+               ng-show="formularioCalculadora.densidad_post_hervor.$dirty && formularioCalculadora.densidad_post_hervor.$invalid">
+             Un número sin decimales
+         </span>
+      </div>
+
+      <button type="button" class="btn btn-primary" ng-click="vm.reset()">Reset</button>
+      <button type="submit" class="btn btn-primary">Calcular</button>
+      <br/><br/><label class="control-label">  {{vm.mensaje_ibus_calculados}} {{vm.ibus_calculados}} </label>
     </form>
+
   </div>
+
 </body>
 
 
 <!-- Application dependencies -->
-<script src="bower_components/api-check/dist/api-check.js"></script>
 <script src="bower_components/angular/angular.js"></script>
-<script src="bower_components/angular-formly/dist/formly.js"></script>
-<script src="bower_components/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.js"></script>
+<script src="bower_components/angular-messages/angular-messages.js"></script>
+
 
 <!-- Scripts de la aplicación -->
 <script type="text/javascript" src="app.js"></script>

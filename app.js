@@ -1,5 +1,6 @@
 (function(){
   'use strict';
 
-  angular.module('app', ['formly', 'formlyBootstrap', 'app.controllers', 'app.services']);
+  var app = angular.module('app', ['ngMessages', 'app.controllers', 'app.services']);
+
 })();
