@@ -14,73 +14,168 @@ angular
 //
 //--------------------------------------------------------------------------------
 function funcionController($scope, $http, IbusFactory){
-	var vm = this;
 
-	vm.mensaje_ibus_calculados = 'Ibus calculados: ';
-  vm.ibus_calculados = 0;
+	// Campos del formulario (se repiten 0-n veces)
+  var formulario = {
+    tiempo_hervor: '60',
+    factor_forma_lupulo: '0',
+    cantidad_lupulo: '45',
+    alfa_acidos: '9',
+    mosto_post_hervor: '40',
+    densidad_post_hervor: '1060'
+  }
 
-	// Datos del formulario
-	vm.calculadoraModel = {};
+	var ibus_iniciales = {coccion: '1', valor: '0'};
 
+	// Colección de formularios, que inicialmente sólo tendrá 1
+	var formularios = [formulario];
+
+	// Datos usados en los formularios
+	$scope.formData = {};
+	$scope.formData.formularios = formularios;
+
+	$scope.mensaje_ibus_calculados = 'Ibus calculados: ';
+	$scope.ibus_calculados = [ibus_iniciales];
 
 	// Para mostrar el combo con los tipos de lúpulo (flor/pellet)
-  vm.tipos_lupulo = [
+  $scope.tipos_lupulo = [
 		{id: 0, descripcion: 'Flor'},
 		{id: 1, descripcion: 'Pellet'}
 	];
 
+	// Estados de los botones
+	$scope.buttonDisabled = false;
+	$scope.botonEliminarDisabled = true;
 
 	//--------------------------------------------------------------------------------
   // Función para limpiar los datos del formulario
 	//--------------------------------------------------------------------------------
-	vm.reset = function(){
+	$scope.reset = function(){
 		console.log('reset');
 
-		vm.calculadoraModel = {
-			tiempo_hervor: '60',
-			factor_forma_lupulo: '0',
-			cantidad_lupulo: '10',
-			alfa_acidos: '5.80',
-			cantidad_mosto: '20',
-			densidad_post_hervor: '1060'
-		};
+		$scope.mensaje_ibus_calculados = 'Ibus calculados: ';
+		$scope.ibus_calculados = [ibus_iniciales];
 
-		vm.mensaje_ibus_calculados = 'Ibus calculados: ';
-		vm.ibus_calculados = 0;
+		// Eliminamos todos los formularios menos el primero
+		var numFormularios = formularios.length;
+		var i = 0;
 
+		for(i=1;i<numFormularios;i++){
+			console.log('Eliminando formulario ' + i);
+			formularios.pop();
+		}
+
+		// Volvemos a habilitar el botón de "calcular" y deshabilitamos el de eliminar
+		$scope.buttonDisabled = false;
+		$scope.botonEliminarDisabled = true;
+
+	}
+
+	//----------------------------------------------------------------------
+	// Añade un formulario al json
+	//----------------------------------------------------------------------
+	$scope.nuevoFormulario = function(){
+		var nuevoFormulario = angular.copy(formulario);
+
+		nuevoFormulario.tiempo_hervor = '';
+		nuevoFormulario.factor_forma_lupulo = 'Elija un formato';
+		nuevoFormulario.cantidad_lupulo = '';
+		nuevoFormulario.alfa_acidos = '';
+		nuevoFormulario.mosto_post_hervor = '';
+		nuevoFormulario.densidad_post_hervor = '';
+
+		formularios.push(nuevoFormulario);
+
+		// Añadimos los ibus calculados inicializandolos a 0
+		$scope.ibus_calculados.push({coccion: formularios.length, valor: '0'});
+
+		// Habilitamos el botón de eliminar formulario por si estaba deshabilitado
+		// (podríamos comprobar si está deshabilitado pero da una pereza...)
+		$scope.botonEliminarDisabled = false;
+
+	}
+
+	//----------------------------------------------------------------------
+	// Elimina el último elemento del json con los formularios
+	//----------------------------------------------------------------------
+	$scope.eliminarFormulario = function(){
+		// No dejamos eliminarlos todos!
+		if(formularios.length > 1){
+			formularios.pop();
+
+			// Tras la eliminación sólo queda 1 => deshabilitamos el botón "-"
+			if(formularios.length == 1){
+				$scope.botonEliminarDisabled = true;
+			}
+		}
+
+		// Eliminamos el resultado del formulario borrado
+		$scope.ibus_calculados.pop();
 	}
 
 
 	//--------------------------------------------------------------------------------
-  // Función que invoca al servicio para el cálculo de ibus
+  // Función que invoca al servicio para el cálculo de ibus una vez por cada
+	// formulario de cocción y calcula la media
 	//--------------------------------------------------------------------------------
-	vm.submit = function(){
-		//alert(JSON.stringify(vm.calculadoraModel));
-
-		console.log(JSON.stringify(vm.calculadoraModel));
+	$scope.calcularIbus = function(){
 
 		if($scope.formularioCalculadora.$valid){
+			// Deshabilitamos el botón de click
+			$scope.buttonDisabled = true;
 
-			// Llamamos al servicio que calcula los ibus
-			IbusFactory.ibusSimpleHttp(vm.calculadoraModel.tiempo_hervor,
-																 vm.calculadoraModel.factor_forma_lupulo,
-																 vm.calculadoraModel.cantidad_lupulo,
-																 vm.calculadoraModel.alfa_acidos,
-																 vm.calculadoraModel.cantidad_mosto,
-																 vm.calculadoraModel.densidad_post_hervor)
-				.success(function(data,status,config,headers){
-					vm.ibus_calculados = data.ibus;
-					console.log('Response from server: ' + data.ibus); //called when responses arrives from server
-			}).error(function(data, status, config, headers){
-				console.log('Some eror ocurred!!');
-			});
+			// Limpiamos los resultados de la ejecución anterior
+			$scope.ibus_calculados = [];
+
+			//------------------------------------------------------------------------
+			// Guardamos las peticiones a enviar y luego vamos contando la
+			// tratadas. Cuando sean iguales => habilitamos el botón de "calcular"
+			// Así evitamos que hagan click varias veces y las llamadas al
+			// servicio se "atropellen"
+			//------------------------------------------------------------------------
+			var peticionesAEnviar = $scope.formData.formularios.length;
+			var peticionesCompletadas = 0;
+
+			for(var i in $scope.formData.formularios){
+
+				// Llamamos al servicio que calcula los ibus
+				IbusFactory.ibusSimpleHttp($scope.formData.formularios[i].tiempo_hervor,
+																	 $scope.formData.formularios[i].factor_forma_lupulo,
+																	 $scope.formData.formularios[i].cantidad_lupulo,
+																 	 $scope.formData.formularios[i].alfa_acidos,
+																	 $scope.formData.formularios[i].mosto_post_hervor,
+																	 $scope.formData.formularios[i].densidad_post_hervor)
+					.success(function(data,status,config,headers){
+
+						// Añadimos el resultado al array del modelo
+						$scope.ibus_calculados.push({coccion: peticionesCompletadas+1, valor: data.ibus});
+
+						console.log('Response: ' + data.ibus); //called when responses arrives from server
+				})
+				.error(function(data, status, config, headers){
+					console.log('Ocurrió un error al invocar al servicio!!');
+					console.log(status);
+				})
+				//--------------------------------------------------------------------------
+				// Comprobamos si se atendieron todas las peticiones y si se atendieron
+				// habilitamos el botón de "calcular"
+				//--------------------------------------------------------------------------
+				.finally(function(){
+					peticionesCompletadas++;
+
+					// Si se trataron todas las peticiones => habilitamos el botón de "calcular"
+					if(peticionesAEnviar == peticionesCompletadas){
+						$scope.buttonDisabled = false;
+					}
+				});
+			}
+
 		}else{
 			//alert('Complete el formulario!');
-			vm.mensaje_ibus_calculados = 'Error: ';
-			vm.ibus_calculados = 'datos incorrectos';
+			$scope.mensaje_ibus_calculados = 'Error: datos incorrectos';
+			$scope.ibus_calculados = [];
 		}
 	};
-
 
 }
 
